@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple game in Vue 3</title>
+    <link rel="stylesheet" href="vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="game">
+      <div class="container">
+        <h1 class="text-center">
+          Epic Battle<br />
+          <small>(Coolest Game Ever)</small>
+        </h1>
+
+        <!-- players -->
+        <div class="c-monster-player-wrap">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="c-monster-player">
+                <h2 class="c-monster-player__name">DevMan</h2>
+                <div
+                  class="c-monster-player__avatar c-monster-player__avatar--player"
+                  :class="playerActionClass"
+                >
+                  <img src="assets/player-normal.gif" alt="" />
+                </div>
+                <div class="c-monster-player__health">
+                  <span
+                    class="c-monster-player__health-value"
+                    :style="{width: energyPlayer + '%'}"
+                    >{{ energyPlayer }}</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="c-monster-player">
+                <h2 class="c-monster-player__name">BugMan</h2>
+                <div
+                  class="c-monster-player__avatar c-monster-player__avatar--monster"
+                  :class="monsterActionClass"
+                >
+                  <img src="assets/monster-normal.gif" alt="" />
+                </div>
+                <div class="c-monster-player__health">
+                  <span
+                    class="c-monster-player__health-value"
+                    :style="{width: energyMonster + '%'}"
+                    >{{ energyMonster }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- controls -->
+        <div class="c-monster-controls-wrap">
+          <div
+            class="c-monster-controls c-monster-controls--start"
+            v-if="!gameStarted"
+          >
+            <button class="btn btn-info" type="button" @click="startGame">
+              Start new game
+            </button>
+          </div>
+          <div class="c-monster-controls c-monster-controls--ingame" v-else>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="btn-group-vertical" role="group">
+                  <button class="btn btn-default" type="button" @click="attack">
+                    Use Basic Attack
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    type="button"
+                    :disabled="mayUseSpecialAttack"
+                    @click="specialAttack"
+                  >
+                    Use Special Attack
+                  </button>
+                  <button
+                    class="btn btn-success"
+                    type="button"
+                    :disabled="mayUseHeal"
+                    @click="heal"
+                  >
+                    Use Heal
+                  </button>
+                  <button class="btn btn-link" type="button" @click="surrender">
+                    Surrender...
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- log -->
+        <div class="c-monster-log-wrap" v-if="log.length > 0">
+          <h3>Battle Log</h3>
+          <div class="c-monster-log">
+            <template v-for="entry in log">
+              <div class="alert-wrap">
+                <div class="alert" :class="entry.class">
+                  {{ entry.message }}
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
